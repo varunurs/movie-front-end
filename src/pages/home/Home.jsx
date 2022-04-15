@@ -105,8 +105,10 @@ export default function Home() {
                   label="Sort By:"
                   onChange={handleChange}
                 >
-                  {sortOptions.map((option) => (
-                    <MenuItem value={option.value}>{option.menuText}</MenuItem>
+                  {sortOptions.map((option, idx) => (
+                    <MenuItem key={idx} value={option.value}>
+                      {option.menuText}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -115,15 +117,17 @@ export default function Home() {
               sx={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr 1fr",
-                gridTemplateRows: "auto",
-                justifyContent: "center",
+                height: "25rem",
                 gridGap: "1em",
-                py: 2,
+                py: 5,
+                overflow: "scroll",
               }}
             >
-              {moviesList.map((movie) => (
-                <MoviesListItem movie={movie} />
-              ))}
+              {moviesList
+                .filter((movie) => movie.Name.includes(searchInput))
+                .map((movie, idx) => (
+                  <MoviesListItem key={idx} movie={movie} />
+                ))}
             </Box>
           </Container>
         </HomeSection2>

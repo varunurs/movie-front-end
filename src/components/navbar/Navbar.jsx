@@ -10,11 +10,14 @@ import {
   Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from "react-router-dom";
 import { StyledAppBar } from "./Navbar.styled";
 import { navLinks } from "./navLinks";
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -32,10 +35,18 @@ export default function Navbar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate(navLinks.title.path);
+            }}
           >
-            {navLinks.title}
+            {navLinks.title.text}
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -65,9 +76,14 @@ export default function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {navLinks.links.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {navLinks.links.map((link, idx) => (
+                <MenuItem
+                  key={idx}
+                  onClick={() => {
+                    navigate(link.path);
+                  }}
+                >
+                  <Typography textAlign="center">{link.text}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -79,16 +95,18 @@ export default function Navbar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            {navLinks.title}
+            {navLinks.title.text}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {navLinks.links.map((page) => (
+            {navLinks.links.map((link, idx) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={idx}
+                onClick={() => {
+                  navigate(link.path);
+                }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {link.text}
               </Button>
             ))}
           </Box>

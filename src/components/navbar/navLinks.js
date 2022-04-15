@@ -1,4 +1,7 @@
 export const navLinks = {
-  title: "MTBS",
-  links: ["Log In", "Sign Up"],
+  title: { text: "MTBS", path: "/" },
+  links: [
+    { path: "/login", text: "Log In" },
+    { path: "/register", text: "Sign Up" },
+  ],
 };

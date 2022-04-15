@@ -29,6 +29,7 @@ export default function MoviesListItem(props) {
         width: "70%",
         height: "20rem",
         display: "grid",
+        cursor: "pointer",
         gridTemplateAreas: `"image"
                             "title"
                             "info"`,
