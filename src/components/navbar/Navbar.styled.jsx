@@ -4,4 +4,5 @@ import { styled } from "@mui/system";
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: theme.palette.primary.main,
+  height: "10vh",
 }));
