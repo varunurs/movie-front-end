@@ -10,47 +10,14 @@ import {
   MenuItem,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { useSelector } from "react-redux";
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { HomeContainer, HomeSection1, HomeSection2 } from "./Home.styled";
 import MoviesListItem from "../../components/movies/MoviesListItem";
 
 export default function Home() {
-  const moviesList = [
-    {
-      Id: 1,
-      Name: "Justice league",
-      Duration: "4h 2m",
-      Language: "English",
-      Rating: "8.6",
-      Genre: "SF",
-      ImageUrl:
-        "https://irs.www.warnerbros.com/keyart-jpeg/movies/media/browser/justice_league_whv_keyart.jpg",
-      TotalPages: "1",
-    },
-    {
-      Id: 2,
-      Name: "Raya",
-      Duration: "1h 47m",
-      Language: "English",
-      Rating: "8.6",
-      Genre: "Anime",
-      ImageUrl:
-        "https://lumiere-a.akamaihd.net/v1/images/p_rayaandthelastdragon_21294_83346778.jpeg",
-      TotalPages: "1",
-    },
-    {
-      Id: 3,
-      Name: "Nobody",
-      Duration: "1h 32m",
-      Language: "English",
-      Rating: "8.3",
-      Genre: "Action",
-      ImageUrl:
-        "https://static.toiimg.com/thumb/msid-75554669,width-219,height-317,imgsize-28101/75554669.jpg",
-      TotalPages: "1",
-    },
-  ];
+  const moviesList = useSelector((state) => state.movies.movies);
 
   const sortOptions = [
     { value: "latest", menuText: "Default (latest first)" },
