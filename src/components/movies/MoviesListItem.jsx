@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { styled } from "@mui/system";
 
 const getBadgeColor = (theme, type) => {
@@ -20,7 +21,7 @@ const Badge = styled(Box)(({ theme, type }) => ({
 }));
 
 export default function MoviesListItem(props) {
-  const { movie } = props;
+  const { movie, isAdmin } = props;
   return (
     <Box
       sx={{
@@ -32,7 +33,8 @@ export default function MoviesListItem(props) {
         cursor: "pointer",
         gridTemplateAreas: `"image"
                             "title"
-                            "info"`,
+                            "info"
+                            "manage"`,
       }}
     >
       <Box sx={{ gridArea: "image", width: "100%", height: "11rem" }}>
@@ -60,6 +62,22 @@ export default function MoviesListItem(props) {
         <Badge type="genre">{movie.Genre}</Badge>
         <Badge type="duration">{movie.Duration}</Badge>
       </Box>
+      {isAdmin && (
+        <Box
+          sx={{
+            gridArea: "manage",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Button sx={{ flex: 1 }}>
+            <EditIcon sx={{ color: "primary.green" }} />
+          </Button>
+          <Button sx={{ flex: 1 }}>
+            <DeleteIcon sx={{ color: "primary.red" }} />
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

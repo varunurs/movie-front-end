@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Box,
+  Button,
   Container,
   TextField,
   Typography,
@@ -15,10 +16,9 @@ import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { HomeContainer, HomeSection1, HomeSection2 } from "./Home.styled";
 import MoviesListItem from "../../components/movies/MoviesListItem";
+import MoviesForm from "../../components/movies/MoviesForm";
 
 export default function Home() {
-  const moviesList = useSelector((state) => state.movies.movies);
-
   const sortOptions = [
     { value: "latest", menuText: "Default (latest first)" },
     { value: "created_oldest", menuText: "Created (oldest first)" },
@@ -28,7 +28,24 @@ export default function Home() {
     { value: "shortest_duration", menuText: "Duration (shortest first)" },
   ];
   const [sortOption, setSortOption] = useState(sortOptions[0].value);
-  const [searchInput, setSearchInput] = useState("abc");
+  const [searchInput, setSearchInput] = useState("");
+  const [movieFormOpen, setMovieFormOpen] = useState(false);
+  const [movieFormValues, setMovieFormValues] = useState({
+    Name: "",
+    Description: "",
+    Duration: "",
+    PlayTime: new Date(),
+    PlayDate: new Date(),
+    TicketPrice: "",
+    TrailerURL: "",
+    Language: "",
+    Rating: "",
+    Genre: "",
+    ImageURL: "",
+  });
+
+  const moviesList = useSelector((state) => state.movies.movies);
+  const isAdmin = useSelector((state) => state.users.userInfo.isAdmin);
 
   const handleChange = (event) => {
     setSortOption(event.target.value);
@@ -38,24 +55,54 @@ export default function Home() {
     setSearchInput(e.target.value);
   };
 
+  const handleMovieFormOpen = () => {
+    setMovieFormOpen(true);
+  };
+
+  const handleMovieFormClose = () => {
+    setMovieFormOpen(false);
+  };
+
   return (
     <>
       <Navbar />
       <HomeContainer>
         <HomeSection1>
           <Typography sx={{ fontSize: "3rem", textAlign: "center" }}>
-            Movie Tickets
+            {isAdmin ? "Movies Admin" : "Movie Tickets"}
           </Typography>
-          <Typography
-            sx={{ fontSize: "1.1rem", textAlign: "center", color: grey[500] }}
-          >
-            Find Movie and Book Tickets
-          </Typography>
+          {!isAdmin && (
+            <Typography
+              sx={{ fontSize: "1.1rem", textAlign: "center", color: grey[500] }}
+            >
+              Find Movie and Book Tickets
+            </Typography>
+          )}
         </HomeSection1>
         <HomeSection2>
-          <Typography sx={{ fontSize: "1.8rem", textAlign: "center", py: 1 }}>
-            Now Playing
-          </Typography>
+          {isAdmin ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                py: 1,
+                background: "",
+              }}
+            >
+              <Button
+                sx={{ backgroundColor: "primary.yellow" }}
+                variant="contained"
+                onClick={handleMovieFormOpen}
+              >
+                Add Movie
+              </Button>
+            </Box>
+          ) : (
+            <Typography sx={{ fontSize: "1.8rem", textAlign: "center", py: 1 }}>
+              Now Playing
+            </Typography>
+          )}
+
           <Container>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <TextField
@@ -93,13 +140,20 @@ export default function Home() {
               {moviesList
                 .filter((movie) => movie.Name.includes(searchInput))
                 .map((movie, idx) => (
-                  <MoviesListItem key={idx} movie={movie} />
+                  <MoviesListItem key={idx} movie={movie} isAdmin={isAdmin} />
                 ))}
             </Box>
           </Container>
         </HomeSection2>
       </HomeContainer>
       <Footer />
+      <MoviesForm
+        isEditing={false}
+        movieFormValues={movieFormValues}
+        setMovieFormValues={setMovieFormValues}
+        open={movieFormOpen}
+        handleClose={handleMovieFormClose}
+      />
     </>
   );
 }

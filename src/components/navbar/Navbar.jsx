@@ -76,6 +76,14 @@ export default function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
+              <MenuItem
+                key={navLinks.title.text}
+                onClick={() => {
+                  navigate(navLinks.title.path);
+                }}
+              >
+                <Typography textAlign="center">Home</Typography>
+              </MenuItem>
               {navLinks.links.map((link, idx) => (
                 <MenuItem
                   key={idx}
@@ -94,9 +102,13 @@ export default function Navbar() {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            onClick={() => {
+              navigate(navLinks.title.path);
+            }}
           >
             {navLinks.title.text}
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {navLinks.links.map((link, idx) => (
               <Button
