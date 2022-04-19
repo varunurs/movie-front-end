@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -11,12 +11,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import { HomeContainer, HomeSection1, HomeSection2 } from "./Home.styled";
 import MoviesListItem from "../../components/movies/MoviesListItem";
 import MoviesForm from "../../components/movies/MoviesForm";
+import { getMoviesAsync } from "../../redux/moviesSlice";
 
 export default function Home() {
   const sortOptions = [
@@ -31,21 +32,30 @@ export default function Home() {
   const [searchInput, setSearchInput] = useState("");
   const [movieFormOpen, setMovieFormOpen] = useState(false);
   const [movieFormValues, setMovieFormValues] = useState({
-    Name: "",
-    Description: "",
-    Duration: "",
-    PlayTime: new Date(),
-    PlayDate: new Date(),
-    TicketPrice: "",
-    TrailerURL: "",
-    Language: "",
-    Rating: "",
-    Genre: "",
-    ImageURL: "",
+    name: "",
+    description: "",
+    duration: "",
+    playTime: new Date(),
+    playDate: new Date(),
+    ticketPrice: "",
+    trailerUrl: "",
+    language: "",
+    rating: "",
+    genre: "",
+    imageUrl: "",
   });
 
   const moviesList = useSelector((state) => state.movies.movies);
   const isAdmin = useSelector((state) => state.users.userInfo.isAdmin);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMoviesAsync())
+      .unwrap()
+      .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (event) => {
     setSortOption(event.target.value);
@@ -138,7 +148,7 @@ export default function Home() {
               }}
             >
               {moviesList
-                .filter((movie) => movie.Name.includes(searchInput))
+                .filter((movie) => movie.name.includes(searchInput))
                 .map((movie, idx) => (
                   <MoviesListItem key={idx} movie={movie} isAdmin={isAdmin} />
                 ))}

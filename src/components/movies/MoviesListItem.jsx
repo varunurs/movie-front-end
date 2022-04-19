@@ -40,15 +40,15 @@ export default function MoviesListItem(props) {
       <Box sx={{ gridArea: "image", width: "100%", height: "11rem" }}>
         <Box
           component="img"
-          src={movie.ImageUrl}
-          alt={`${movie.Name} image link`}
+          src={movie.imageUrl}
+          alt={`${movie.name} image link`}
           sx={{ width: "100%", height: "100%" }}
         />
       </Box>
       <Typography
         sx={{ gridArea: "title", fontSize: "1.5rem", textAlign: "center" }}
       >
-        {movie.Name}
+        {movie.name}
       </Typography>
       <Box
         sx={{
@@ -58,9 +58,9 @@ export default function MoviesListItem(props) {
           px: 1,
         }}
       >
-        <Badge type="rating">{movie.Rating}</Badge>
-        <Badge type="genre">{movie.Genre}</Badge>
-        <Badge type="duration">{movie.Duration}</Badge>
+        <Badge type="rating">{movie.rating}</Badge>
+        <Badge type="genre">{movie.genre}</Badge>
+        <Badge type="duration">{movie.duration}</Badge>
       </Box>
       {isAdmin && (
         <Box

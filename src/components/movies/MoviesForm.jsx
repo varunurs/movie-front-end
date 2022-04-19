@@ -28,8 +28,8 @@ export default function MoviesForm(props) {
         <Box sx={{ display: "flex", my: 1 }}>
           <TextField
             label="Movie Name"
-            name="Name"
-            value={movieFormValues.Name}
+            name="name"
+            value={movieFormValues.name}
             onChange={handleInputChange}
             variant="outlined"
             sx={{ mr: 1 }}
@@ -37,8 +37,8 @@ export default function MoviesForm(props) {
           />
           <TextField
             label="Genre"
-            name="Genre"
-            value={movieFormValues.Genre}
+            name="genre"
+            value={movieFormValues.genre}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
@@ -46,8 +46,8 @@ export default function MoviesForm(props) {
         </Box>
         <TextField
           label="Description"
-          name="Description"
-          value={movieFormValues.Description}
+          name="description"
+          value={movieFormValues.description}
           onChange={handleInputChange}
           variant="outlined"
           size="small"
@@ -56,8 +56,8 @@ export default function MoviesForm(props) {
         <Box sx={{ display: "flex", my: 1 }}>
           <TextField
             label="Language"
-            name="Language"
-            value={movieFormValues.Language}
+            name="language"
+            value={movieFormValues.language}
             onChange={handleInputChange}
             variant="outlined"
             sx={{ mr: 1 }}
@@ -65,8 +65,8 @@ export default function MoviesForm(props) {
           />
           <TextField
             label="Duration"
-            name="Duration"
-            value={movieFormValues.Duration}
+            name="duration"
+            value={movieFormValues.duration}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
@@ -77,9 +77,9 @@ export default function MoviesForm(props) {
           <MobileDatePicker
             openTo="year"
             views={["year", "month", "day"]}
-            value={movieFormValues.PlayDate}
+            value={movieFormValues.playDate}
             onChange={(newValue) => {
-              setMovieFormValues({ ...movieFormValues, PlayDate: newValue });
+              setMovieFormValues({ ...movieFormValues, playDate: newValue });
             }}
             renderInput={(params) => (
               <TextField {...params} size="small" sx={{ mr: 1 }} />
@@ -87,9 +87,9 @@ export default function MoviesForm(props) {
           />
           <MobileTimePicker
             label="Playing Time"
-            value={movieFormValues.PlayTime}
+            value={movieFormValues.playTime}
             onChange={(newValue) => {
-              setMovieFormValues({ ...movieFormValues, PlayTime: newValue });
+              setMovieFormValues({ ...movieFormValues, playTime: newValue });
             }}
             renderInput={(params) => <TextField {...params} size="small" />}
           />
@@ -98,8 +98,8 @@ export default function MoviesForm(props) {
         <Box sx={{ display: "flex", my: 1 }}>
           <TextField
             label="Ticket Price"
-            name="TicketPrice"
-            value={movieFormValues.TicketPrice}
+            name="ticketPrice"
+            value={movieFormValues.ticketPrice}
             onChange={handleInputChange}
             variant="outlined"
             sx={{ mr: 1 }}
@@ -107,8 +107,8 @@ export default function MoviesForm(props) {
           />
           <TextField
             label="Rating"
-            name="Rating"
-            value={movieFormValues.Rating}
+            name="rating"
+            value={movieFormValues.rating}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
@@ -116,8 +116,8 @@ export default function MoviesForm(props) {
         </Box>
         <TextField
           label="Trailer URL"
-          name="TrailerURL"
-          value={movieFormValues.TrailerURL}
+          name="trailerUrl"
+          value={movieFormValues.trailerUrl}
           onChange={handleInputChange}
           variant="outlined"
           size="small"
@@ -126,8 +126,8 @@ export default function MoviesForm(props) {
         />
         <TextField
           label="Poster Image URL"
-          name="ImageURL"
-          value={movieFormValues.ImageURL}
+          name="imageUrl"
+          value={movieFormValues.imageUrl}
           onChange={handleInputChange}
           variant="outlined"
           size="small"
