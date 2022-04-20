@@ -18,6 +18,7 @@ import { HomeContainer, HomeSection1, HomeSection2 } from "./Home.styled";
 import MoviesListItem from "../../components/movies/MoviesListItem";
 import MoviesForm from "../../components/movies/MoviesForm";
 import { getMoviesAsync } from "../../redux/moviesSlice";
+import Snackbar from "../../components/snackbar/Snackbar";
 
 export default function Home() {
   const sortOptions = [
@@ -28,22 +29,40 @@ export default function Home() {
     { value: "longest_duration", menuText: "Duration (longest first)" },
     { value: "shortest_duration", menuText: "Duration (shortest first)" },
   ];
-  const [sortOption, setSortOption] = useState(sortOptions[0].value);
-  const [searchInput, setSearchInput] = useState("");
-  const [movieFormOpen, setMovieFormOpen] = useState(false);
-  const [movieFormValues, setMovieFormValues] = useState({
+  const initialMovieFormValues = {
     name: "",
     description: "",
     duration: "",
-    playTime: new Date(),
-    playDate: new Date(),
+    playingTime: new Date(),
+    playingDate: new Date(),
     ticketPrice: "",
     trailerUrl: "",
     language: "",
     rating: "",
     genre: "",
     imageUrl: "",
+  };
+  const [sortOption, setSortOption] = useState(sortOptions[0].value);
+  const [searchInput, setSearchInput] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [movieFormOpen, setMovieFormOpen] = useState(false);
+  const [movieFormValues, setMovieFormValues] = useState(
+    initialMovieFormValues
+  );
+
+  const [snackbarProps, setSnackbarProps] = useState({
+    open: false,
+    msg: "",
+    severity: "error",
   });
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarProps({ ...snackbarProps, open: false });
+  };
 
   const moviesList = useSelector((state) => state.movies.movies);
   const isAdmin = useSelector((state) => state.users.userInfo.isAdmin);
@@ -71,6 +90,8 @@ export default function Home() {
 
   const handleMovieFormClose = () => {
     setMovieFormOpen(false);
+    setIsEditing(false);
+    setMovieFormValues(initialMovieFormValues);
   };
 
   return (
@@ -109,7 +130,7 @@ export default function Home() {
             </Box>
           ) : (
             <Typography sx={{ fontSize: "1.8rem", textAlign: "center", py: 1 }}>
-              Now Playing
+              N ow Playing
             </Typography>
           )}
 
@@ -150,7 +171,15 @@ export default function Home() {
               {moviesList
                 .filter((movie) => movie.name.includes(searchInput))
                 .map((movie, idx) => (
-                  <MoviesListItem key={idx} movie={movie} isAdmin={isAdmin} />
+                  <MoviesListItem
+                    key={idx}
+                    movie={movie}
+                    isAdmin={isAdmin}
+                    setIsEditing={setIsEditing}
+                    setMovieFormValues={setMovieFormValues}
+                    setMovieFormOpen={setMovieFormOpen}
+                    setSnackbarProps={setSnackbarProps}
+                  />
                 ))}
             </Box>
           </Container>
@@ -158,11 +187,18 @@ export default function Home() {
       </HomeContainer>
       <Footer />
       <MoviesForm
-        isEditing={false}
+        isEditing={isEditing}
         movieFormValues={movieFormValues}
         setMovieFormValues={setMovieFormValues}
         open={movieFormOpen}
+        setSnackbarProps={setSnackbarProps}
         handleClose={handleMovieFormClose}
+      />
+      <Snackbar
+        snackbarOpen={snackbarProps.open}
+        msg={snackbarProps.msg}
+        severity={snackbarProps.severity}
+        handleClose={handleSnackbarClose}
       />
     </>
   );

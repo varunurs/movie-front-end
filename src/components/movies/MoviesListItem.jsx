@@ -2,6 +2,8 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { styled } from "@mui/system";
+import { useDispatch } from "react-redux";
+import { deleteMoviesAsync } from "../../redux/moviesSlice";
 
 const getBadgeColor = (theme, type) => {
   if (type === "rating") return theme.palette.primary.rating;
@@ -21,7 +23,48 @@ const Badge = styled(Box)(({ theme, type }) => ({
 }));
 
 export default function MoviesListItem(props) {
-  const { movie, isAdmin } = props;
+  const {
+    movie,
+    isAdmin,
+    setIsEditing,
+    setMovieFormValues,
+    setMovieFormOpen,
+    setSnackbarProps,
+  } = props;
+
+  const dispatch = useDispatch();
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    const playDate = new Date(`${movie.playingDate}Z`);
+    const playTime = new Date(`${movie.playingTime}Z`);
+    setMovieFormValues({
+      ...movie,
+      playingDate: playDate,
+      playingTime: playTime,
+    });
+    setMovieFormOpen(true);
+  };
+
+  const handleDelete = async () => {
+    await dispatch(deleteMoviesAsync({ id: movie.id }))
+      .unwrap()
+      .then(() => {
+        setSnackbarProps({
+          open: true,
+          severity: "success",
+          msg: "Movie Deleted Successfully",
+        });
+      })
+      .catch(() => {
+        setSnackbarProps({
+          open: true,
+          severity: "error",
+          msg: "Failed to delete movie, Try again!",
+        });
+      });
+  };
+
   return (
     <Box
       sx={{
@@ -70,10 +113,10 @@ export default function MoviesListItem(props) {
             justifyContent: "space-evenly",
           }}
         >
-          <Button sx={{ flex: 1 }}>
+          <Button sx={{ flex: 1 }} onClick={handleEdit}>
             <EditIcon sx={{ color: "primary.green" }} />
           </Button>
-          <Button sx={{ flex: 1 }}>
+          <Button sx={{ flex: 1 }} onClick={handleDelete}>
             <DeleteIcon sx={{ color: "primary.red" }} />
           </Button>
         </Box>

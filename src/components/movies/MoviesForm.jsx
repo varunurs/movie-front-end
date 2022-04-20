@@ -11,14 +11,66 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker, MobileTimePicker } from "@mui/x-date-pickers";
+import { useDispatch } from "react-redux";
+import { addMoviesAsync, updateMoviesAsync } from "../../redux/moviesSlice";
 
 export default function MoviesForm(props) {
-  const { open, handleClose, isEditing, movieFormValues, setMovieFormValues } =
-    props;
+  const {
+    open,
+    handleClose,
+    isEditing,
+    movieFormValues,
+    setMovieFormValues,
+    setSnackbarProps,
+  } = props;
+
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setMovieFormValues({ ...movieFormValues, [name]: value });
+  };
+
+  const handleSubmit = async () => {
+    if (isEditing) {
+      await dispatch(updateMoviesAsync(movieFormValues))
+        .unwrap()
+        .then(() => {
+          setSnackbarProps({
+            open: true,
+            severity: "success",
+            msg: "Movie Updated Successfully",
+          });
+          handleClose();
+        })
+        .catch(() => {
+          setSnackbarProps({
+            open: true,
+            severity: "error",
+            msg: "Failed to update movie, Try again!",
+          });
+          handleClose();
+        });
+    } else {
+      await dispatch(addMoviesAsync(movieFormValues))
+        .unwrap()
+        .then(() => {
+          setSnackbarProps({
+            open: true,
+            severity: "success",
+            msg: "Movie Added Successfully",
+          });
+          handleClose();
+        })
+        .catch(() => {
+          setSnackbarProps({
+            open: true,
+            severity: "error",
+            msg: "Failed to add movie, Try again!",
+          });
+          handleClose();
+        });
+    }
   };
 
   return (
@@ -77,9 +129,12 @@ export default function MoviesForm(props) {
           <MobileDatePicker
             openTo="year"
             views={["year", "month", "day"]}
-            value={movieFormValues.playDate}
+            value={movieFormValues.playingDate}
             onChange={(newValue) => {
-              setMovieFormValues({ ...movieFormValues, playDate: newValue });
+              setMovieFormValues({
+                ...movieFormValues,
+                playingDate: newValue.toISOString().split(".")[0],
+              });
             }}
             renderInput={(params) => (
               <TextField {...params} size="small" sx={{ mr: 1 }} />
@@ -87,9 +142,12 @@ export default function MoviesForm(props) {
           />
           <MobileTimePicker
             label="Playing Time"
-            value={movieFormValues.playTime}
+            value={movieFormValues.playingTime}
             onChange={(newValue) => {
-              setMovieFormValues({ ...movieFormValues, playTime: newValue });
+              setMovieFormValues({
+                ...movieFormValues,
+                playingTime: newValue.toISOString().split(".")[0],
+              });
             }}
             renderInput={(params) => <TextField {...params} size="small" />}
           />
@@ -137,7 +195,7 @@ export default function MoviesForm(props) {
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button
-          onClick={handleClose}
+          onClick={handleSubmit}
           sx={{ backgroundColor: "primary.yellow" }}
           variant="contained"
         >
