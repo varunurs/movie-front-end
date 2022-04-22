@@ -92,7 +92,7 @@ export default function MovieDetails({ setSnackbarProps }) {
             >
               Watch Trailer
             </Button>
-            {isLoggedIn ? (
+            {!isLoggedIn ? (
               <Typography>Login to Book Tickets</Typography>
             ) : (
               <Button
