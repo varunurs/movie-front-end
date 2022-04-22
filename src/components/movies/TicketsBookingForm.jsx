@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -7,65 +7,61 @@ import {
   Button,
   TextField,
   Box,
+  Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { addMoviesAsync, updateMoviesAsync } from "../../redux/moviesSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { bookTicketsAsync } from "../../redux/ticketsSlice";
 
 export default function TicketsBookingForm(props) {
-  const {
-    open,
-    handleClose,
-    isEditing,
-    ticketBookingFormValues,
-    setMovieFormValues,
-    setSnackbarProps,
-  } = props;
+  const { open, handleClose, setSnackbarProps, movie } = props;
+  const dispatch = useDispatch();
+  const UserId = useSelector((state) => state.auth.userId);
+  const playingDate = new Date(movie.playingDate).toLocaleDateString("hi-IN");
+  const playingTime = new Date(movie.playingTime).toLocaleTimeString("hi-IN");
+  const [ticketBookingFormValues, setTicketBookingFormValues] = useState({
+    Id: movie.id,
+    Qty: 1,
+    Price: movie.ticketPrice,
+    Phone: "",
+    ReservationTime: `${playingDate} ${playingTime} `,
+    MovieId: movie.id,
+    UserId: UserId,
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setMovieFormValues({ ...ticketBookingFormValues, [name]: value });
+    if (name === "Qty")
+      setTicketBookingFormValues({
+        ...ticketBookingFormValues,
+        [name]: value,
+        Price: value * movie.ticketPrice,
+      });
+    else
+      setTicketBookingFormValues({
+        ...ticketBookingFormValues,
+        [name]: value,
+      });
   };
 
   const handleSubmit = async () => {
-    // if (isEditing) {
-    //   await dispatch(updateMoviesAsync(movieFormValues))
-    //     .unwrap()
-    //     .then(() => {
-    //       setSnackbarProps({
-    //         open: true,
-    //         severity: "success",
-    //         msg: "Movie Updated Successfully",
-    //       });
-    //       handleClose();
-    //     })
-    //     .catch(() => {
-    //       setSnackbarProps({
-    //         open: true,
-    //         severity: "error",
-    //         msg: "Failed to update movie, Try again!",
-    //       });
-    //       handleClose();
-    //     });
-    // } else {
-    //   await dispatch(addMoviesAsync(movieFormValues))
-    //     .unwrap()
-    //     .then(() => {
-    //       setSnackbarProps({
-    //         open: true,
-    //         severity: "success",
-    //         msg: "Movie Added Successfully",
-    //       });
-    //       handleClose();
-    //     })
-    //     .catch(() => {
-    //       setSnackbarProps({
-    //         open: true,
-    //         severity: "error",
-    //         msg: "Failed to add movie, Try again!",
-    //       });
-    //       handleClose();
-    //     });
-    // }
+    await dispatch(bookTicketsAsync(ticketBookingFormValues))
+      .unwrap()
+      .then(() => {
+        setSnackbarProps({
+          open: true,
+          severity: "success",
+          msg: "Booked Tickets Successfully",
+        });
+        handleClose();
+      })
+      .catch(() => {
+        setSnackbarProps({
+          open: true,
+          severity: "error",
+          msg: "Failed to book Tickets, Try again!",
+        });
+        handleClose();
+      });
   };
 
   return (
@@ -75,8 +71,8 @@ export default function TicketsBookingForm(props) {
         <Box sx={{ display: "flex", my: 1 }}>
           <TextField
             label="Mobile Number"
-            name="mobile"
-            value={ticketBookingFormValues.mobile}
+            name="Phone"
+            value={ticketBookingFormValues.Phone}
             onChange={handleInputChange}
             variant="outlined"
             sx={{ mr: 1 }}
@@ -85,13 +81,19 @@ export default function TicketsBookingForm(props) {
           />
           <TextField
             label="Number of Tickets"
-            name="count"
-            value={ticketBookingFormValues.count}
+            name="Qty"
+            value={ticketBookingFormValues.Qty}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
             type="number"
           />
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography sx={{ my: 1 }}>Total Price: </Typography>
+          <Typography sx={{ fontSize: "1.5em", mx: 1 }} component="span">
+            {ticketBookingFormValues.Price}
+          </Typography>
         </Box>
       </DialogContent>
       <DialogActions>
@@ -101,7 +103,7 @@ export default function TicketsBookingForm(props) {
           sx={{ backgroundColor: "primary.yellow" }}
           variant="contained"
         >
-          {isEditing ? "Update Movie" : "Add movie"}
+          Book Tickets
         </Button>
       </DialogActions>
     </Dialog>

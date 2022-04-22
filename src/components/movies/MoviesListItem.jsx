@@ -3,6 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { styled } from "@mui/system";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { deleteMoviesAsync } from "../../redux/moviesSlice";
 
 const getBadgeColor = (theme, type) => {
@@ -30,10 +31,10 @@ export default function MoviesListItem(props) {
     setMovieFormValues,
     setMovieFormOpen,
     setSnackbarProps,
-    handleMovieDetailsOpen,
   } = props;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -91,7 +92,7 @@ export default function MoviesListItem(props) {
       </Box>
       <Typography
         sx={{ gridArea: "title", fontSize: "1.5rem", textAlign: "center" }}
-        onClick={() => handleMovieDetailsOpen(movie)}
+        onClick={() => navigate("/movie-details", { state: { movie: movie } })}
       >
         {movie.name}
       </Typography>

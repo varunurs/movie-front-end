@@ -7,7 +7,7 @@ const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 export const loginUserAsync = createAsyncThunk(
   "auth/loginUserAsync",
   async (payload, { rejectWithValue }) => {
-    const url = `${AUTH_URL}/api/Users/Login`;
+    const url = `${AUTH_URL}/UserSvc/Login`;
 
     try {
       const response = await axios.post(url, {
@@ -24,7 +24,7 @@ export const loginUserAsync = createAsyncThunk(
 export const registerUserAsync = createAsyncThunk(
   "auth/registerUserAsync",
   async (payload, { rejectWithValue }) => {
-    const url = `${AUTH_URL}/api/Users/Register`;
+    const url = `${AUTH_URL}/UserSvc/Register`;
 
     try {
       const response = await axios.post(url, {
@@ -43,7 +43,12 @@ export const registerUserAsync = createAsyncThunk(
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: { isLoggedIn: false, token: "", isAdmin: false },
+  initialState: {
+    isLoggedIn: false,
+    token: null,
+    isAdmin: false,
+    userId: null,
+  },
   reducers: {
     logOut: () => {
       return { isLoggedIn: false };
@@ -51,18 +56,19 @@ export const authSlice = createSlice({
   },
   extraReducers: {
     [loginUserAsync.fulfilled]: (state, action) => {
-      const { token, role } = action.payload;
+      const { token, role, id } = action.payload;
 
       return {
         ...state,
         token: token,
         isLoggedIn: true,
         isAdmin: role === "admin" ? true : false,
+        userId: id,
       };
     },
   },
 });
 
-export const { logOut, setLogIn } = authSlice.actions;
+export const { logOut } = authSlice.actions;
 
 export default authSlice.reducer;

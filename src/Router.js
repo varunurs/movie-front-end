@@ -4,6 +4,8 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Snackbar from "./components/snackbar/Snackbar";
+import MovieDetails from "./components/movies/MovieDetails";
+import NotFound from "./pages/notFound/NotFound";
 
 export default function Router() {
   const [snackbarProps, setSnackbarProps] = useState({
@@ -32,6 +34,12 @@ export default function Router() {
           path="/register"
           element={<Register setSnackbarProps={setSnackbarProps} />}
         />
+        <Route
+          path="/movie-details"
+          setSnackbarProps={setSnackbarProps}
+          element={<MovieDetails />}
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Snackbar
         snackbarOpen={snackbarProps.open}

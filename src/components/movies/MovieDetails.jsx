@@ -1,37 +1,53 @@
-import React from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
-import { Close as CloseIcon } from "@mui/icons-material";
+import React, { useState } from "react";
+import { Box, Typography, Button } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Navbar from "../navbar/Navbar";
+import Footer from "../footer/Footer";
+import TicketsBookingForm from "./TicketsBookingForm";
 
-export default function MovieDetails(props) {
-  const { open, handleClose, movie } = props;
+export default function MovieDetails({ setSnackbarProps }) {
+  const location = useLocation();
+  const [ticketBookingFormOpen, setTicketBookingFormOpen] = useState(false);
+  const { movie } = location.state;
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const handleTicketBookingFormOpen = () => {
+    setTicketBookingFormOpen(true);
+  };
+
+  const handleTicketBookingFormCLose = () => {
+    setTicketBookingFormOpen(false);
+  };
+
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <>
+      <Navbar setSnackbarProps={setSnackbarProps} />
+
       <Box
         sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
           width: 700,
+          height: "80vh",
           bgcolor: "background.paper",
-          border: "2px solid #000",
+          margin: "0 auto",
+          my: 1,
           boxShadow: 24,
+          overflow: "scroll",
           p: 4,
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <CloseIcon sx={{ cursor: "pointer" }} onClick={handleClose} />
-        </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {movie.name}
-          </Typography>
-          <Box sx={{ width: "200px", height: "200px" }}>
+          <Box sx={{ flex: 2 }}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              {movie.name}
+            </Typography>
+            <Typography sx={{ my: 1 }}>Description:</Typography>
+            <Typography sx={{ width: "70%", textAlign: "justify" }}>
+              {movie.description}
+            </Typography>
+          </Box>
+
+          <Box sx={{ flex: 1, width: "200px", height: "200px" }}>
             <Box
               component="img"
               src={movie.imageUrl}
@@ -41,11 +57,6 @@ export default function MovieDetails(props) {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ flex: 2 }}>
-            <Typography>Description:</Typography>
-            <Typography sx={{ width: "70%", textAlign: "justify" }}>
-              {movie.description}
-            </Typography>
-
             <Typography>Language: {movie.language}</Typography>
             <Typography>Duration: {movie.duration}</Typography>
             <Typography>
@@ -64,6 +75,7 @@ export default function MovieDetails(props) {
             sx={{
               display: "flex",
               justifyContent: "flex-end",
+              alignItems: "center",
               flexDirection: "column",
               my: 2,
               flex: 1,
@@ -71,20 +83,37 @@ export default function MovieDetails(props) {
           >
             <Button
               variant="contained"
+              fullWidth
               onClick={() => {
                 const url = movie.trailerUrl;
-                console.log(url);
+
                 window.open(url, "_blank");
               }}
             >
               Watch Trailer
             </Button>
-            <Button variant="contained" sx={{ my: 1 }}>
-              Book Tickets
-            </Button>
+            {isLoggedIn ? (
+              <Typography>Login to Book Tickets</Typography>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={handleTicketBookingFormOpen}
+                sx={{ my: 1 }}
+              >
+                Book Tickets
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
-    </Modal>
+      <Footer />
+      <TicketsBookingForm
+        open={ticketBookingFormOpen}
+        handleClose={handleTicketBookingFormCLose}
+        setSnackbarProps={setSnackbarProps}
+        movie={movie}
+      />
+    </>
   );
 }
