@@ -66,7 +66,7 @@ export default function Home() {
   };
 
   const moviesList = useSelector((state) => state.movies.movies);
-  const isAdmin = useSelector((state) => state.users.userInfo.isAdmin);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const [movieDetails, setMovieDetails] = useState(initialMovieFormValues);
   const [openMovieDetails, setOpenMovieDetails] = useState(false);
 

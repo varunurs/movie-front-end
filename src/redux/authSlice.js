@@ -43,15 +43,22 @@ export const registerUserAsync = createAsyncThunk(
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: { isLoggedIn: false, token: "" },
+  initialState: { isLoggedIn: false, token: "", isAdmin: false },
   reducers: {
-    logOut: (state, action) => {
+    logOut: () => {
       return { isLoggedIn: false };
     },
   },
   extraReducers: {
     [loginUserAsync.fulfilled]: (state, action) => {
-      return { ...state, token: action.payload, isLoggedIn: true };
+      const { token, role } = action.payload;
+
+      return {
+        ...state,
+        token: token,
+        isLoggedIn: true,
+        isAdmin: role === "admin" ? true : false,
+      };
     },
   },
 });
