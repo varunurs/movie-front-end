@@ -30,6 +30,7 @@ export default function MoviesListItem(props) {
     setMovieFormValues,
     setMovieFormOpen,
     setSnackbarProps,
+    handleMovieDetailsOpen,
   } = props;
 
   const dispatch = useDispatch();
@@ -90,6 +91,7 @@ export default function MoviesListItem(props) {
       </Box>
       <Typography
         sx={{ gridArea: "title", fontSize: "1.5rem", textAlign: "center" }}
+        onClick={() => handleMovieDetailsOpen(movie)}
       >
         {movie.name}
       </Typography>

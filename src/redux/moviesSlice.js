@@ -23,16 +23,23 @@ export const addMoviesAsync = createAsyncThunk(
     try {
       const data = {
         ...payload,
-        playingDate: payload.playingDate.toISOString().replace("Z", "").trim(),
-        playingTime: payload.playingTime.toISOString().replace("Z", "").trim(),
+        rating: parseFloat(payload.rating),
+        ticketPrice: parseFloat(payload.ticketPrice),
+        playingDate: payload.playingDate.toISOString(),
+        playingTime: payload.playingTime.toISOString(),
       };
 
-      const id = await axios.post(`${BASE_URL}/api/Movies`, data, {
+      const res = await axios.post(`${BASE_URL}/api/Movies`, data, {
         // headers: {
         //   "x-access-token": payload.token,
         // },
       });
-      return { id: id, ...data };
+      return {
+        id: res.data,
+        ...data,
+        playingDate: data.playingDate.replace("Z", "").trim(),
+        playingTime: data.playingTime.replace("Z", "").trim(),
+      };
     } catch (err) {
       throw err;
     }
@@ -44,16 +51,22 @@ export const updateMoviesAsync = createAsyncThunk(
     try {
       const data = {
         ...payload,
-        playingDate: payload.playingDate.toISOString().replace("Z", "").trim(),
-        playingTime: payload.playingTime.toISOString().replace("Z", "").trim(),
+        rating: parseFloat(payload.rating),
+        ticketPrice: parseFloat(payload.ticketPrice),
+        playingDate: payload.playingDate.toISOString(),
+        playingTime: payload.playingTime.toISOString(),
       };
 
-      await axios.patch(`${BASE_URL}/api/Movies/${payload.id}`, data, {
+      await axios.put(`${BASE_URL}/api/Movies/${payload.id}`, data, {
         // headers: {
         //   "x-access-token": payload.token,
         // },
       });
-      return data;
+      return {
+        ...data,
+        playingDate: data.playingDate.replace("Z", "").trim(),
+        playingTime: data.playingTime.replace("Z", "").trim(),
+      };
     } catch (err) {
       throw err;
     }
@@ -94,7 +107,7 @@ export const moviesSlice = createSlice({
         ticketPrice: 1000,
         rating: 8.5,
         genre: "crime",
-        trailorUrl: "https://youtu.be/JKa05nyUmuQ",
+        trailerUrl: "https://youtu.be/JKa05nyUmuQ",
         imageUrl:
           "https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/kgf-chapter-2-et00098647-08-04-2022-11-33-32.jpg",
       },
@@ -110,7 +123,7 @@ export const moviesSlice = createSlice({
         ticketPrice: 500,
         rating: 9,
         genre: "Adventure",
-        trailorUrl: "https://youtu.be/aWzlQ2N6qqg",
+        trailerUrl: "https://youtu.be/aWzlQ2N6qqg",
         imageUrl:
           "https://terrigen-cdn-dev.marvel.com/content/prod/1x/marvel-multiverse-rpg_playtest-rulebook-cover_opt.jpg",
       },
@@ -126,7 +139,7 @@ export const moviesSlice = createSlice({
         ticketPrice: 1000,
         rating: 10,
         genre: "Adventure/Action",
-        trailorUrl: "https://youtu.be/uO6Mq2Um8Zc",
+        trailerUrl: "https://youtu.be/uO6Mq2Um8Zc",
         imageUrl:
           "https://upload.wikimedia.org/wikipedia/en/8/88/Thor_Love_and_Thunder_poster.jpeg",
       },

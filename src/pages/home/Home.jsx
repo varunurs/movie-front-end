@@ -19,6 +19,7 @@ import MoviesListItem from "../../components/movies/MoviesListItem";
 import MoviesForm from "../../components/movies/MoviesForm";
 import { getMoviesAsync } from "../../redux/moviesSlice";
 import Snackbar from "../../components/snackbar/Snackbar";
+import MovieDetails from "../../components/movies/MovieDetails";
 
 export default function Home() {
   const sortOptions = [
@@ -66,6 +67,17 @@ export default function Home() {
 
   const moviesList = useSelector((state) => state.movies.movies);
   const isAdmin = useSelector((state) => state.users.userInfo.isAdmin);
+  const [movieDetails, setMovieDetails] = useState(initialMovieFormValues);
+  const [openMovieDetails, setOpenMovieDetails] = useState(false);
+
+  const handleMovieDetailsClose = () => {
+    setOpenMovieDetails(false);
+  };
+
+  const handleMovieDetailsOpen = (movie) => {
+    setMovieDetails(movie);
+    setOpenMovieDetails(true);
+  };
 
   const dispatch = useDispatch();
 
@@ -96,7 +108,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSnackbarProps={setSnackbarProps} />
       <HomeContainer>
         <HomeSection1>
           <Typography sx={{ fontSize: "3rem", textAlign: "center" }}>
@@ -179,6 +191,8 @@ export default function Home() {
                     setMovieFormValues={setMovieFormValues}
                     setMovieFormOpen={setMovieFormOpen}
                     setSnackbarProps={setSnackbarProps}
+                    setMovieDetails={setMovieDetails}
+                    handleMovieDetailsOpen={handleMovieDetailsOpen}
                   />
                 ))}
             </Box>
@@ -199,6 +213,11 @@ export default function Home() {
         msg={snackbarProps.msg}
         severity={snackbarProps.severity}
         handleClose={handleSnackbarClose}
+      />
+      <MovieDetails
+        open={openMovieDetails}
+        movie={movieDetails}
+        handleClose={handleMovieDetailsClose}
       />
     </>
   );

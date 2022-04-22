@@ -133,7 +133,7 @@ export default function MoviesForm(props) {
             onChange={(newValue) => {
               setMovieFormValues({
                 ...movieFormValues,
-                playingDate: newValue.toISOString().split(".")[0],
+                playingDate: newValue,
               });
             }}
             renderInput={(params) => (
@@ -142,11 +142,11 @@ export default function MoviesForm(props) {
           />
           <MobileTimePicker
             label="Playing Time"
-            value={movieFormValues.playingTime}
+            value={new Date(movieFormValues.playingTime)}
             onChange={(newValue) => {
               setMovieFormValues({
                 ...movieFormValues,
-                playingTime: newValue.toISOString().split(".")[0],
+                playingTime: newValue,
               });
             }}
             renderInput={(params) => <TextField {...params} size="small" />}

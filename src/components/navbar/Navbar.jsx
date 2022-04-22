@@ -11,12 +11,16 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { StyledAppBar } from "./Navbar.styled";
 import { navLinks } from "./navLinks";
+import { logOut } from "../../redux/authSlice";
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -84,16 +88,26 @@ export default function Navbar() {
               >
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
-              {navLinks.links.map((link, idx) => (
+              {isLoggedIn ? (
                 <MenuItem
-                  key={idx}
                   onClick={() => {
-                    navigate(link.path);
+                    dispatch(logOut());
                   }}
                 >
-                  <Typography textAlign="center">{link.text}</Typography>
+                  <Typography textAlign="center">Log Out</Typography>
                 </MenuItem>
-              ))}
+              ) : (
+                navLinks.links.map((link, idx) => (
+                  <MenuItem
+                    key={idx}
+                    onClick={() => {
+                      navigate(link.path);
+                    }}
+                  >
+                    <Typography textAlign="center">{link.text}</Typography>
+                  </MenuItem>
+                ))
+              )}
             </Menu>
           </Box>
 
@@ -110,17 +124,28 @@ export default function Navbar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {navLinks.links.map((link, idx) => (
+            {isLoggedIn ? (
               <Button
-                key={idx}
                 onClick={() => {
-                  navigate(link.path);
+                  dispatch(logOut());
                 }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {link.text}
+                Log Out
               </Button>
-            ))}
+            ) : (
+              navLinks.links.map((link, idx) => (
+                <Button
+                  key={idx}
+                  onClick={() => {
+                    navigate(link.path);
+                  }}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {link.text}
+                </Button>
+              ))
+            )}
           </Box>
         </Toolbar>
       </Container>

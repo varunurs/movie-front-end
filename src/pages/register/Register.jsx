@@ -1,24 +1,44 @@
 import React, { useState } from "react";
 import { Button, Container, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { useDispatch } from "react-redux";
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
+import { registerUserAsync } from "../../redux/authSlice";
 
-export default function Register() {
+export default function Register({ setSnackbarProps }) {
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  const dispatch = useDispatch();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(formValues);
+    await dispatch(registerUserAsync({ ...formValues }))
+      .unwrap()
+      .then(() => {
+        setSnackbarProps({
+          open: true,
+          severity: "success",
+          msg: "Registered Successfully!",
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        setSnackbarProps({
+          open: true,
+          severity: "error",
+          msg: "Invalid Credentials",
+        });
+      });
   };
   return (
     <>
