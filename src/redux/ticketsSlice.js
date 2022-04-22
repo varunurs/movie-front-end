@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env.REACT_APP_RESERVATION_URL;
 
 export const bookTicketsAsync = createAsyncThunk(
   "tickets/bookTickets",
   async (payload, { rejectWithValue }) => {
-    const url = `${BASE_URL}/ReservationSvc`;
+    const url = `${BASE_URL}/api/Reservation`;
 
     try {
       await axios.post(url, {

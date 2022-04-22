@@ -7,7 +7,7 @@ const AUTH_URL = process.env.REACT_APP_AUTH_URL;
 export const loginUserAsync = createAsyncThunk(
   "auth/loginUserAsync",
   async (payload, { rejectWithValue }) => {
-    const url = `${AUTH_URL}/UserSvc/Login`;
+    const url = `${AUTH_URL}/api/Users/Login`;
 
     try {
       const response = await axios.post(url, {
@@ -24,7 +24,7 @@ export const loginUserAsync = createAsyncThunk(
 export const registerUserAsync = createAsyncThunk(
   "auth/registerUserAsync",
   async (payload, { rejectWithValue }) => {
-    const url = `${AUTH_URL}/UserSvc/Register`;
+    const url = `${AUTH_URL}/api/Users/Register`;
 
     try {
       const response = await axios.post(url, {

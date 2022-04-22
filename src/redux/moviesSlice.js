@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const axios = require("axios");
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env.REACT_APP_MOVIE_URL;
 
 export const getMoviesAsync = createAsyncThunk(
   "movies/getMoviesAsync",
   async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/MovieSvc`, {
+      const response = await axios.get(`${BASE_URL}/api/Movies`, {
         // headers: {
         //   "x-access-token": payload.token,
         // },
@@ -29,7 +29,7 @@ export const addMoviesAsync = createAsyncThunk(
         playingTime: payload.playingTime.toISOString(),
       };
 
-      const res = await axios.post(`${BASE_URL}/MovieSvc`, data, {
+      const res = await axios.post(`${BASE_URL}/api/Movies`, data, {
         // headers: {
         //   "x-access-token": payload.token,
         // },
@@ -57,7 +57,7 @@ export const updateMoviesAsync = createAsyncThunk(
         playingTime: payload.playingTime.toISOString(),
       };
 
-      await axios.put(`${BASE_URL}/MovieSvc/${payload.id}`, data, {
+      await axios.put(`${BASE_URL}/api/Movies/${payload.id}`, data, {
         // headers: {
         //   "x-access-token": payload.token,
         // },
@@ -77,7 +77,7 @@ export const deleteMoviesAsync = createAsyncThunk(
   async (payload) => {
     try {
       await axios.delete(
-        `${BASE_URL}/MovieSvc/${payload.id}`,
+        `${BASE_URL}/api/Movies/${payload.id}`,
         {},
         {
           // headers: {
