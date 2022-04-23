@@ -19,7 +19,6 @@ export default function TicketsBookingForm(props) {
   const playingDate = new Date(movie.playingDate).toLocaleDateString("hi-IN");
   const playingTime = new Date(movie.playingTime).toLocaleTimeString("hi-IN");
   const [ticketBookingFormValues, setTicketBookingFormValues] = useState({
-    Id: movie.id,
     Qty: 1,
     Price: movie.ticketPrice,
     Phone: "",
