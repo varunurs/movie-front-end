@@ -36,8 +36,7 @@ export default function Router() {
         />
         <Route
           path="/movie-details"
-          setSnackbarProps={setSnackbarProps}
-          element={<MovieDetails />}
+          element={<MovieDetails setSnackbarProps={setSnackbarProps} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
