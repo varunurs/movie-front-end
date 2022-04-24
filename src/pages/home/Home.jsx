@@ -19,6 +19,7 @@ import MoviesListItem from "../../components/movies/MoviesListItem";
 import MoviesForm from "../../components/movies/MoviesForm";
 import { getMoviesAsync } from "../../redux/moviesSlice";
 import Snackbar from "../../components/snackbar/Snackbar";
+import { getTicketsAsync } from "../../redux/ticketsSlice";
 
 export default function Home() {
   const sortOptions = [
@@ -49,6 +50,13 @@ export default function Home() {
   const [movieFormValues, setMovieFormValues] = useState(
     initialMovieFormValues
   );
+  const userId = useSelector((state) => state.auth.userId);
+
+  useEffect(() => {
+    dispatch(getTicketsAsync({ userId }));
+    dispatch(getMoviesAsync());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [snackbarProps, setSnackbarProps] = useState({
     open: false,
