@@ -6,6 +6,7 @@ import Register from "./pages/register/Register";
 import Snackbar from "./components/snackbar/Snackbar";
 import MovieDetails from "./components/movies/MovieDetails";
 import NotFound from "./pages/notFound/NotFound";
+import BookingDetails from "./components/movies/BookingDetails";
 
 export default function Router() {
   const [snackbarProps, setSnackbarProps] = useState({
@@ -37,6 +38,10 @@ export default function Router() {
         <Route
           path="/movie-details"
           element={<MovieDetails setSnackbarProps={setSnackbarProps} />}
+        />
+        <Route
+          path="/booking-details"
+          element={<BookingDetails setSnackbarProps={setSnackbarProps} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

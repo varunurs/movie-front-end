@@ -4,6 +4,21 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_RESERVATION_URL;
 
+export const getTicketsAsync = createAsyncThunk(
+  "tickets/getTickets",
+  async () => {
+    const url = `${BASE_URL}/api/Reservation`;
+
+    try {
+      const res = await axios.get(url);
+
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const bookTicketsAsync = createAsyncThunk(
   "tickets/bookTickets",
   async (payload, { rejectWithValue }) => {
@@ -32,8 +47,8 @@ export const ticketsSlice = createSlice({
     },
   },
   extraReducers: {
-    [bookTicketsAsync.fulfilled]: (state, action) => {
-      return [...state, action.payload];
+    [getTicketsAsync.fulfilled]: (state, action) => {
+      return action.payload;
     },
   },
 });

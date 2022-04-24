@@ -146,6 +146,9 @@ export default function Navbar() {
                 </Button>
               ))
             )}
+            {isLoggedIn&&<Button sx={{color:"white"}} onClick={()=>{
+              navigate("/booking-details");
+            }}>Booking Details</Button>}
           </Box>
         </Toolbar>
       </Container>
