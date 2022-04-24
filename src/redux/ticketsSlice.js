@@ -38,6 +38,23 @@ export const bookTicketsAsync = createAsyncThunk(
   }
 );
 
+export const deleteTicketAsync = createAsyncThunk(
+  "tickets/deleteTicketAsync",
+  async (payload, { rejectWithValue }) => {
+    const url = `${BASE_URL}/api/Reservation`;
+
+    try {
+      await axios.delete(url, {
+        Id: payload.Id,
+      });
+
+      return payload;
+    } catch (error) {
+      return rejectWithValue("Invalid Credentials!");
+    }
+  }
+);
+
 export const ticketsSlice = createSlice({
   name: "tickets",
   initialState: [],
@@ -49,6 +66,13 @@ export const ticketsSlice = createSlice({
   extraReducers: {
     [getTicketsAsync.fulfilled]: (state, action) => {
       return action.payload;
+    },
+    [deleteTicketAsync.fulfilled]: (state, action) => {
+      const tickets = state;
+      const filteredTickets = tickets.filter(
+        (ticket) => ticket.Id !== action.payload.Id
+      );
+      return filteredTickets;
     },
   },
 });
