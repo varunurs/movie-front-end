@@ -8,7 +8,7 @@ import { getMoviesAsync } from "../../redux/moviesSlice";
 
 export default function BookingDetails() {
   const dispatch = useDispatch();
-  const ticketDetails = useSelector((state) => state.tickets);
+  const ticketDetails = useSelector((state) => state.tickets["$values"]);
   const movies = useSelector((state) => state.movies.movies);
   const userId = useSelector((state) => state.auth.userId);
 
