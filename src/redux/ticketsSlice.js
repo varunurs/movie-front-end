@@ -7,7 +7,7 @@ const BASE_URL = process.env.REACT_APP_RESERVATION_URL;
 export const getTicketsAsync = createAsyncThunk(
   "tickets/getTickets",
   async (payload) => {
-    const url = `${BASE_URL}/api/Reservation/payload.userId`;
+    const url = `${BASE_URL}/api/Reservation/${payload.userId}`;
 
     try {
       const res = await axios.get(url);
