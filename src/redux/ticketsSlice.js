@@ -41,12 +41,10 @@ export const bookTicketsAsync = createAsyncThunk(
 export const deleteTicketAsync = createAsyncThunk(
   "tickets/deleteTicketAsync",
   async (payload, { rejectWithValue }) => {
-    const url = `${BASE_URL}/api/Reservation`;
+    const url = `${BASE_URL}/api/Reservation/${payload.Id}`;
 
     try {
-      await axios.delete(url, {
-        Id: payload.Id,
-      });
+      await axios.delete(url);
 
       return payload;
     } catch (error) {
