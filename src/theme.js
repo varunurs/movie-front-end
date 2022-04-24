@@ -11,6 +11,7 @@ const theme = createTheme({
       rating: "#5d1ce8",
       genre: "#d90b56",
       duration: "#b3b3b3",
+      white: "#fff",
     },
     text: {
       primary: "#000",

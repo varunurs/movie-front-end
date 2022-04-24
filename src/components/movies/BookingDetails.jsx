@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, Button } from "@mui/material";
 import Navbar from "../navbar/Navbar";
 import Footer from "../footer/Footer";
 import { getTicketsAsync } from "../../redux/ticketsSlice";
@@ -11,34 +11,31 @@ export default function BookingDetails() {
   const ticketDetails = useSelector((state) => state.tickets["$values"]);
   const movies = useSelector((state) => state.movies.movies);
   const userId = useSelector((state) => state.auth.userId);
-  const tickets = [];
 
   const getMovie = (id) => {
     let movie = {};
     for (let mov in movies) {
       if (mov.id === id) {
         console.log(mov);
-        movie = { ...mov };
+        movie = mov;
         break;
       }
     }
-
     return movie;
   };
 
-  useEffect(() => {
-    dispatch(getTicketsAsync());
-    dispatch(getMoviesAsync());
-  }, []);
+  const tickets = [];
 
   ticketDetails.forEach((ticket) => {
-    if (ticket.UserId === userId) {
-      let result = {};
-      const movieDetails = getMovie(ticket.MovieId);
-      result = { ...ticket, movieDetails: movieDetails };
-      tickets.push(result);
-    }
+    const MovieDetails = getMovie(ticket.MovieId);
+    tickets.push({ ...ticket, MovieDetails });
   });
+
+  useEffect(() => {
+    dispatch(getTicketsAsync({ userId }));
+    dispatch(getMoviesAsync());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // console.log(tickets);
   return (
@@ -56,7 +53,6 @@ export default function BookingDetails() {
           <Paper
             sx={{
               display: "flex",
-              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               justifySelf: "center",
@@ -67,7 +63,42 @@ export default function BookingDetails() {
             key={idx}
             elevation={5}
           >
-            <Typography>Movie ID:{ticket.MovieId}</Typography>
+            <Box sx={{ flex: 1 }}>
+              <Box sx={{ width: "100px", height: "100px" }}>
+                <Box
+                  component="img"
+                  sx={{ width: "100%" }}
+                  src={ticket.MovieDetails.imageUrl}
+                />
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <Typography>Movie Name:{ticket.MovieDetails.name}</Typography>
+              <Typography>Reserved for :{ticket.ReservationTime}</Typography>
+              <Typography> Language:{ticket.MovieDetails.language}</Typography>
+              <Typography> Language:{ticket.MovieDetails.duration}</Typography>
+
+              <Button
+                sx={{
+                  backgroundColor: "primary.red",
+                  color: "primary.white",
+                  "&:hover": {
+                    backgroundColor: "primary.red",
+                    color: "primary.white",
+                  },
+                }}
+                variant="contained"
+              >
+                Cancel Ticket
+              </Button>
+            </Box>
           </Paper>
         ))}
       </Box>
