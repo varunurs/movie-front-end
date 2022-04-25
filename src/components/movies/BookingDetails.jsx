@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Box, Typography, Paper, Button } from "@mui/material";
 import Navbar from "../navbar/Navbar";
 import Footer from "../footer/Footer";
-import { deleteTicketAsync } from "../../redux/ticketsSlice";
+import { deleteTicketById } from "../../redux/ticketsSlice";
+import axios from "axios";
+
+const BASE_URL = process.env.REACT_APP_RESERVATION_URL;
 
 export default function BookingDetails({ setSnackbarProps }) {
   const ticketDetails = useSelector((state) => state.tickets["$values"]);
@@ -12,22 +15,14 @@ export default function BookingDetails({ setSnackbarProps }) {
   const tickets = [];
 
   const handleCancelTicket = async (id) => {
-    await dispatch(deleteTicketAsync({ Id: id }))
-      .unwrap()
-      .then(() => {
-        setSnackbarProps({
-          open: true,
-          severity: "success",
-          msg: "Tickets cancelled Successfully",
-        });
-      })
-      .catch(() => {
-        setSnackbarProps({
-          open: true,
-          severity: "error",
-          msg: "Failed to cancel ticket, Try again!",
-        });
-      });
+    await axios.delete(`${BASE_URL}/api/Reservation/${id}`);
+    console.log(id);
+    dispatch(deleteTicketById({ Id: id }));
+    setSnackbarProps({
+      open: true,
+      severity: "success",
+      msg: "Tickets cancelled Successfully",
+    });
   };
 
   ticketDetails.forEach((ticket) => {

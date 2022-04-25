@@ -38,21 +38,6 @@ export const bookTicketsAsync = createAsyncThunk(
   }
 );
 
-export const deleteTicketAsync = createAsyncThunk(
-  "tickets/deleteTicketAsync",
-  async (payload, { rejectWithValue }) => {
-    const url = `${BASE_URL}/api/Reservation/${payload.Id}`;
-
-    try {
-      await axios.delete(url);
-
-      return payload;
-    } catch (error) {
-      return rejectWithValue("Invalid Credentials!");
-    }
-  }
-);
-
 export const ticketsSlice = createSlice({
   name: "tickets",
   initialState: [],
@@ -60,17 +45,17 @@ export const ticketsSlice = createSlice({
     logOut: () => {
       return { isLoggedIn: false };
     },
-  },
-  extraReducers: {
-    [getTicketsAsync.fulfilled]: (state, action) => {
-      return action.payload;
-    },
-    [deleteTicketAsync.fulfilled]: (state, action) => {
+    deleteTicketById: (state, action) => {
       const tickets = state;
       const filteredTickets = tickets.filter(
         (ticket) => ticket.Id !== action.payload.Id
       );
       return filteredTickets;
+    },
+  },
+  extraReducers: {
+    [getTicketsAsync.fulfilled]: (state, action) => {
+      return action.payload;
     },
   },
 });
