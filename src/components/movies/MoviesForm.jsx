@@ -75,133 +75,144 @@ export default function MoviesForm(props) {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>{isEditing ? "Edit Movie" : "Add movie"}</DialogTitle>
-      <DialogContent>
-        <Box sx={{ display: "flex", my: 1 }}>
+      <Box component="form" onSubmit={handleSubmit}>
+        <DialogTitle>{isEditing ? "Edit Movie" : "Add movie"}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ display: "flex", my: 1 }}>
+            <TextField
+              label="Movie Name"
+              name="name"
+              value={movieFormValues.name}
+              onChange={handleInputChange}
+              variant="outlined"
+              sx={{ mr: 1 }}
+              size="small"
+              required
+            />
+            <TextField
+              label="Genre"
+              name="genre"
+              value={movieFormValues.genre}
+              onChange={handleInputChange}
+              variant="outlined"
+              size="small"
+              required
+            />
+          </Box>
           <TextField
-            label="Movie Name"
-            name="name"
-            value={movieFormValues.name}
-            onChange={handleInputChange}
-            variant="outlined"
-            sx={{ mr: 1 }}
-            size="small"
-          />
-          <TextField
-            label="Genre"
-            name="genre"
-            value={movieFormValues.genre}
-            onChange={handleInputChange}
-            variant="outlined"
-            size="small"
-          />
-        </Box>
-        <TextField
-          label="Description"
-          name="description"
-          value={movieFormValues.description}
-          onChange={handleInputChange}
-          variant="outlined"
-          size="small"
-          fullWidth
-        />
-        <Box sx={{ display: "flex", my: 1 }}>
-          <TextField
-            label="Language"
-            name="language"
-            value={movieFormValues.language}
-            onChange={handleInputChange}
-            variant="outlined"
-            sx={{ mr: 1 }}
-            size="small"
-          />
-          <TextField
-            label="Duration"
-            name="duration"
-            value={movieFormValues.duration}
+            label="Description"
+            name="description"
+            value={movieFormValues.description}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
+            fullWidth
+            required
           />
-        </Box>
+          <Box sx={{ display: "flex", my: 1 }}>
+            <TextField
+              label="Language"
+              name="language"
+              value={movieFormValues.language}
+              onChange={handleInputChange}
+              variant="outlined"
+              sx={{ mr: 1 }}
+              size="small"
+              required
+            />
+            <TextField
+              label="Duration"
+              name="duration"
+              value={movieFormValues.duration}
+              onChange={handleInputChange}
+              variant="outlined"
+              size="small"
+              required
+            />
+          </Box>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
-            openTo="year"
-            views={["year", "month", "day"]}
-            value={movieFormValues.playingDate}
-            onChange={(newValue) => {
-              setMovieFormValues({
-                ...movieFormValues,
-                playingDate: newValue,
-              });
-            }}
-            renderInput={(params) => (
-              <TextField {...params} size="small" sx={{ mr: 1 }} />
-            )}
-          />
-          <MobileTimePicker
-            label="Playing Time"
-            value={new Date(movieFormValues.playingTime)}
-            onChange={(newValue) => {
-              setMovieFormValues({
-                ...movieFormValues,
-                playingTime: newValue,
-              });
-            }}
-            renderInput={(params) => <TextField {...params} size="small" />}
-          />
-        </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MobileDatePicker
+              openTo="year"
+              views={["year", "month", "day"]}
+              value={movieFormValues.playingDate}
+              onChange={(newValue) => {
+                setMovieFormValues({
+                  ...movieFormValues,
+                  playingDate: newValue,
+                });
+              }}
+              renderInput={(params) => (
+                <TextField {...params} size="small" sx={{ mr: 1 }} />
+              )}
+            />
+            <MobileTimePicker
+              label="Playing Time"
+              value={new Date(movieFormValues.playingTime)}
+              onChange={(newValue) => {
+                setMovieFormValues({
+                  ...movieFormValues,
+                  playingTime: newValue,
+                });
+              }}
+              renderInput={(params) => <TextField {...params} size="small" />}
+            />
+          </LocalizationProvider>
 
-        <Box sx={{ display: "flex", my: 1 }}>
+          <Box sx={{ display: "flex", my: 1 }}>
+            <TextField
+              label="Ticket Price"
+              name="ticketPrice"
+              value={movieFormValues.ticketPrice}
+              onChange={handleInputChange}
+              variant="outlined"
+              sx={{ mr: 1 }}
+              size="small"
+              required
+            />
+            <TextField
+              label="Rating"
+              name="rating"
+              value={movieFormValues.rating}
+              onChange={handleInputChange}
+              variant="outlined"
+              size="small"
+              required
+            />
+          </Box>
           <TextField
-            label="Ticket Price"
-            name="ticketPrice"
-            value={movieFormValues.ticketPrice}
+            label="Trailer URL"
+            name="trailerUrl"
+            value={movieFormValues.trailerUrl}
             onChange={handleInputChange}
             variant="outlined"
-            sx={{ mr: 1 }}
             size="small"
+            sx={{ mb: 1 }}
+            fullWidth
+            required
           />
           <TextField
-            label="Rating"
-            name="rating"
-            value={movieFormValues.rating}
+            label="Poster Image URL"
+            name="imageUrl"
+            value={movieFormValues.imageUrl}
             onChange={handleInputChange}
             variant="outlined"
             size="small"
+            fullWidth
+            required
           />
-        </Box>
-        <TextField
-          label="Trailer URL"
-          name="trailerUrl"
-          value={movieFormValues.trailerUrl}
-          onChange={handleInputChange}
-          variant="outlined"
-          size="small"
-          sx={{ mb: 1 }}
-          fullWidth
-        />
-        <TextField
-          label="Poster Image URL"
-          name="imageUrl"
-          value={movieFormValues.imageUrl}
-          onChange={handleInputChange}
-          variant="outlined"
-          size="small"
-          fullWidth
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button
-          onClick={handleSubmit}
-          sx={{ backgroundColor: "primary.yellow" }}
-          variant="contained"
-        >
-          {isEditing ? "Update Movie" : "Add movie"}
-        </Button>
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button
+            sx={{ backgroundColor: "primary.yellow" }}
+            type="submit"
+            variant="contained"
+          >
+            {isEditing ? "Update Movie" : "Add movie"}
+          </Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 }

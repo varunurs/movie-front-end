@@ -68,6 +68,7 @@ export default function Login({ setSnackbarProps }) {
             size="small"
             onChange={handleInputChange}
             value={formValues.email}
+            required
           />
           <TextField
             variant="outlined"
@@ -77,6 +78,7 @@ export default function Login({ setSnackbarProps }) {
             size="small"
             onChange={handleInputChange}
             value={formValues.password}
+            required
           />
           <Button variant="contained" type="submit">
             Login

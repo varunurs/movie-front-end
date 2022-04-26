@@ -69,6 +69,7 @@ export default function Register({ setSnackbarProps }) {
             size="small"
             onChange={handleInputChange}
             value={formValues.name}
+            required
           />
           <TextField
             variant="outlined"
@@ -78,6 +79,7 @@ export default function Register({ setSnackbarProps }) {
             size="small"
             onChange={handleInputChange}
             value={formValues.email}
+            required
           />
           <TextField
             variant="outlined"
@@ -87,6 +89,7 @@ export default function Register({ setSnackbarProps }) {
             size="small"
             onChange={handleInputChange}
             value={formValues.password}
+            required
           />
           <Button variant="contained" type="submit">
             Sign Up
