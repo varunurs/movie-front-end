@@ -14,15 +14,15 @@ export default function BookingDetails({ setSnackbarProps }) {
   const dispatch = useDispatch();
   const tickets = [];
 
-  const handleCancelTicket = async (id) => {
-    await axios.delete(`${BASE_URL}/api/Reservation/${id}`);
+  const handleCancelTicket = (id) => {
+    axios.delete(`${BASE_URL}/api/Reservation/${id}`);
     console.log(id);
-    dispatch(deleteTicketById({ Id: id }));
     setSnackbarProps({
       open: true,
       severity: "success",
       msg: "Tickets cancelled Successfully",
     });
+    dispatch(deleteTicketById({ Id: id }));
   };
 
   ticketDetails.forEach((ticket) => {

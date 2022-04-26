@@ -46,8 +46,7 @@ export const ticketsSlice = createSlice({
       return { isLoggedIn: false };
     },
     deleteTicketById: (state, action) => {
-      const tickets = state;
-      const filteredTickets = tickets.filter(
+      const filteredTickets = state.filter(
         (ticket) => ticket.Id !== action.payload.Id
       );
       return filteredTickets;
@@ -60,6 +59,6 @@ export const ticketsSlice = createSlice({
   },
 });
 
-export const { logOut } = ticketsSlice.actions;
+export const { logOut, deleteTicketById } = ticketsSlice.actions;
 
 export default ticketsSlice.reducer;
