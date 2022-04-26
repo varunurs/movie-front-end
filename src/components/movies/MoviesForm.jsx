@@ -26,12 +26,15 @@ export default function MoviesForm(props) {
 
   const dispatch = useDispatch();
 
+  const currentDate = new Date();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setMovieFormValues({ ...movieFormValues, [name]: value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (isEditing) {
       await dispatch(updateMoviesAsync(movieFormValues))
         .unwrap()
@@ -134,6 +137,7 @@ export default function MoviesForm(props) {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
               openTo="year"
+              minDate={!isEditing && currentDate}
               views={["year", "month", "day"]}
               value={movieFormValues.playingDate}
               onChange={(newValue) => {
